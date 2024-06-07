@@ -6,8 +6,6 @@ import 'package:si_desa_sleman/views/land.dart';
 import 'package:si_desa_sleman/views/menusurat.dart';
 import 'package:si_desa_sleman/views/notifikasi.dart';
 
-
-
 void main() {
   runApp(MyApp());
 }
@@ -22,12 +20,11 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/register': (context) => RegisterPage(),
-        '/login':(context) => LoginPage(),
-        '/land':(context) => LandingPage(),
-        '/surat':(context) => MenuSurat(),
-        '/notif':(context) => NotifPage(),
-        '/akun':(context) => Akun(),
-
+        '/login': (context) => LoginPage(),
+        '/land': (context) => LandingPage(),
+        '/surat': (context) => MenuSurat(),
+        '/notif': (context) => NotifPage(),
+        '/akun': (context) => Akun(),
       },
     );
   }

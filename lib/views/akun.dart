@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:si_desa_sleman/views/LoginPage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class Akun extends StatelessWidget {
+class Akun extends StatefulWidget {
+  @override
+  _AkunState createState() => _AkunState();
+}
+
+class _AkunState extends State<Akun> {
+  final TextEditingController namaController = TextEditingController(text: 'Ujang');
+  final TextEditingController emailController = TextEditingController(text: 'Sleman rt2 rw2');
+  final TextEditingController nikController = TextEditingController(text: '1242314231414');
+  final TextEditingController noHpController = TextEditingController(text: '0882314784');
+  File? _image;
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,82 +36,100 @@ class Akun extends StatelessWidget {
           },
         ),
       ),
-      body: Container(
-        color: Colors.blue.shade100,
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey.shade300,
-              backgroundImage: NetworkImage('https://via.placeholder.com/150'), 
-              onBackgroundImageError: (exception, stackTrace) {
-                print('Failed to load image');
-              },
-              child: ClipOval(
-                child: Image.network(
-                  'https://via.placeholder.com/150',
-                  fit: BoxFit.cover,
-                  width: 100,
-                  height: 100,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.grey.shade700,
-                    );
-                  },
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue[100],
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                width: 350.0,
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _image == null
+                          ? NetworkImage(
+                              'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Anies_Baswedan%2C_Candidate_for_Indonesia%27s_President_in_2024.jpg/220px-Anies_Baswedan%2C_Candidate_for_Indonesia%27s_President_in_2024.jpg',
+                            )
+                          : FileImage(_image!) as ImageProvider,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Mas Anis',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: Text(
+                        'Ganti Foto',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    buildTextField('Nama', namaController),
+                    SizedBox(height: 10),
+                    buildTextField('Email', emailController),
+                    SizedBox(height: 10),
+                    buildTextField('NIK', nikController),
+                    SizedBox(height: 10),
+                    buildTextField('No.Hp', noHpController),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      ),
+                      child: Text('Log Out'),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Mas Anis',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Card(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Profil Lengkap'),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      // Navigasi ke halaman profil lengkap
-                    },
-                  ),
-                  Divider(height: 1),
-                  ListTile(
-                    leading: Icon(Icons.lock),
-                    title: Text('Ganti Password'),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      // Navigasi ke halaman ganti password
-                    },
-                  ),
-                  Divider(height: 1),
-                  ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text('Logout'),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget buildTextField(String label, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(height: 5),
+        TextField(
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          ),
+          controller: controller,
+          readOnly: true,
+        ),
+      ],
     );
   }
 }
@@ -97,5 +137,6 @@ class Akun extends StatelessWidget {
 void main() {
   runApp(MaterialApp(
     home: Akun(),
+    debugShowCheckedModeBanner: false,
   ));
 }
