@@ -134,7 +134,7 @@ class LandingPage extends StatelessWidget {
                             label: "Akun",
                             imagePath: 'assets/akun.png',
                             onTap: () {
-                              Navigator.pushNamed(context, '/register');
+                              Navigator.pushNamed(context, '/akun');
                             },
                           ),
                           
