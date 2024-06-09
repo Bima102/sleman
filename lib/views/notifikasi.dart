@@ -110,7 +110,7 @@ class NotifPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0), // Add horizontal padding
                         child: Text(
-                          "Tidak ada notifikasi saat ini",
+                          "tidak ada notifikasi saat ini",
                           style: const TextStyle(
                             color: Color(0xff202244),
                             fontWeight: FontWeight.w600,
